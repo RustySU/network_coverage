@@ -7,12 +7,11 @@ A FastAPI-based backend application for mobile coverage data in France, followin
 This application uses PostgreSQL with PostGIS for data storage instead of in-memory solutions for the following performance reasons:
 
 ### Scale Requirements
-- **Estimated Coverage**: ~30,000 mobile sites across France
+- **Estimated Coverage**: ~77,147 mobile sites across France
 - **Concurrent Users**: 15,000 agencies 
 - **Simultaneous Requests**: All agencies potentially querying at the same time (15,000 agencies × 100 houses each)
 
 ### Why Database Over In-Memory
-- **Memory Constraints**: Loading 30,000 mobile sites with spatial data in memory would require significant RAM
 - **Concurrent Access**: Database provides efficient concurrent read access for multiple simultaneous requests
 - **Spatial Indexing**: PostGIS spatial indexes enable fast geographic queries (O(log n) vs O(n) for in-memory)
 - **Connection Pooling**: Database connection pooling handles high concurrent load efficiently

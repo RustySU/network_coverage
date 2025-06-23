@@ -87,15 +87,20 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
                 f"Searching for sites near ({latitude}, {longitude}) within {radius_km}km"
             )
 
-            # Build query using ST_DWithin with geography cast for proper distance calculation
+            # Use a hybrid approach: SQLAlchemy functions with minimal raw text for geography casting
+            # This ensures accurate spherical distance calculations while maintaining type safety
             query = select(MobileSiteModel).where(
-                text(f"""
+                text("""
                     ST_DWithin(
                         geom::geography,
-                        ST_SetSRID(ST_MakePoint({longitude}, {latitude}), 4326)::geography,
-                        {radius_km * 1000}
+                        ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
+                        :radius_meters
                     )
-                """)
+                """).bindparams(
+                    longitude=longitude,
+                    latitude=latitude,
+                    radius_meters=radius_km * 1000
+                )
             )
 
             # Execute query
