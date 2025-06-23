@@ -37,8 +37,8 @@ class TestCSVDataLoader:
         site = data_loader._parse_row(row, 0)
 
         assert site.operator == Operator.ORANGE
-        assert isinstance(site.location.x, float)
-        assert isinstance(site.location.y, float)
+        assert isinstance(site.location.longitude, float)
+        assert isinstance(site.location.latitude, float)
         assert site.coverage.has_2g is True
         assert site.coverage.has_3g is True
         assert site.coverage.has_4g is False
@@ -57,8 +57,8 @@ class TestCSVDataLoader:
         site = data_loader._parse_row(row, 0)
 
         assert site.operator == Operator.SFR
-        assert site.location.x == 2.3522  # longitude
-        assert site.location.y == 48.8566  # latitude
+        assert site.location.longitude == 2.3522  # longitude
+        assert site.location.latitude == 48.8566  # latitude
         assert site.coverage.has_2g is True
         assert site.coverage.has_3g is False
         assert site.coverage.has_4g is True

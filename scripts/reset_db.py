@@ -4,10 +4,13 @@
 import asyncio
 import os
 import sys
+from pathlib import Path
 
-# Add the app directory to the Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+# Add the project root to Python path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
+import typer
 from sqlalchemy import text
 
 from app.infrastructure.database import Base, engine

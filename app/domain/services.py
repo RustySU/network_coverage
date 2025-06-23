@@ -32,6 +32,6 @@ class MobileCoverageService:
         has_4g: bool,
     ) -> MobileSite:
         """Create a new mobile site."""
-        location = Location(x=x, y=y)
+        location = Location(longitude=x, latitude=y)
         coverage = Coverage(has_2g=has_2g, has_3g=has_3g, has_4g=has_4g)
         return MobileSite(operator=operator, location=location, coverage=coverage)

@@ -1,6 +1,7 @@
 """Application layer use cases."""
 
 import logging
+import math
 
 from app.application.schemas import (
     CoverageInfo,
@@ -10,6 +11,14 @@ from app.application.schemas import (
 from app.domain.exceptions import GeocodingError, RepositoryError
 from app.domain.repositories import MobileSiteRepository
 from app.domain.services import MobileCoverageService
+from app.infrastructure.coordinate_utils import calculate_distance_km
+
+# Technology-specific search radii
+TECHNOLOGY_RADII = {
+    "2G": 30.0,  # 2G coverage radius in km
+    "3G": 5.0,   # 3G coverage radius in km
+    "4G": 10.0,  # 4G coverage radius in km
+}
 
 # Use the longest search radius (2G: 30km) to cover all technologies
 SEARCH_RADIUS_KM = 30.0
@@ -209,12 +218,17 @@ class FindNearbySitesByAddressUseCase:
             for site in sites:
                 operator_name = site.operator.value.lower()
                 if operator_name in coverage_by_operator:
-                    # Update coverage based on what this site supports
-                    if site.coverage.has_2g:
+                    # Calculate distance from search point to site
+                    distance_km = calculate_distance_km(
+                        latitude, longitude, site.location.latitude, site.location.longitude
+                    )
+                    
+                    # Update coverage based on what this site supports and distance
+                    if site.coverage.has_2g and distance_km <= TECHNOLOGY_RADII["2G"]:
                         coverage_by_operator[operator_name].has_2g = True
-                    if site.coverage.has_3g:
+                    if site.coverage.has_3g and distance_km <= TECHNOLOGY_RADII["3G"]:
                         coverage_by_operator[operator_name].has_3g = True
-                    if site.coverage.has_4g:
+                    if site.coverage.has_4g and distance_km <= TECHNOLOGY_RADII["4G"]:
                         coverage_by_operator[operator_name].has_4g = True
 
             return coverage_by_operator

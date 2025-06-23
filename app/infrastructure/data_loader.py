@@ -128,7 +128,7 @@ class CSVDataLoader:
             except (ValueError, KeyError) as e:
                 raise ValueError(f"Invalid coverage flags: {e}")
 
-            location = Location(x=longitude, y=latitude)
+            location = Location(longitude=longitude, latitude=latitude)
             coverage = Coverage(has_2g=has_2g, has_3g=has_3g, has_4g=has_4g)
 
             return MobileSite(

@@ -17,8 +17,8 @@ class MobileSiteModel(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     operator = Column(String, nullable=False)
-    x = Column(Float, nullable=False)
-    y = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    latitude = Column(Float, nullable=False)
     geom = Column(
         Geometry("POINT", srid=4326), nullable=False
     )  # WGS84 for GPS coordinates
@@ -27,12 +27,12 @@ class MobileSiteModel(Base):
     has_4g = Column(Boolean, nullable=False, default=False)
 
     @property
-    def x_value(self) -> float:
-        return cast(float, self.x)
+    def longitude_value(self) -> float:
+        return cast(float, self.longitude)
 
     @property
-    def y_value(self) -> float:
-        return cast(float, self.y)
+    def latitude_value(self) -> float:
+        return cast(float, self.latitude)
 
     @property
     def operator_value(self) -> str:

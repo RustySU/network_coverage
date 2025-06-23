@@ -3,15 +3,14 @@
 
 import asyncio
 import logging
+import sys
 import time
 from pathlib import Path
 
 import typer
 
-# Add the project root to the Python path
+# Add the project root to Python path
 project_root = Path(__file__).parent.parent
-import sys
-
 sys.path.insert(0, str(project_root))
 
 # Disable SQLAlchemy verbose logging for better performance

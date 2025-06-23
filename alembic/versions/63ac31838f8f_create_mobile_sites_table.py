@@ -25,8 +25,8 @@ def upgrade() -> None:
     op.create_table('mobile_sites',
         sa.Column('id', postgresql.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
         sa.Column('operator', sa.String(), nullable=False),
-        sa.Column('x', sa.Float(), nullable=False),
-        sa.Column('y', sa.Float(), nullable=False),
+        sa.Column('longitude', sa.Float(), nullable=False),
+        sa.Column('latitude', sa.Float(), nullable=False),
         sa.Column('geom', Geometry('POINT', srid=4326), nullable=False),  # WGS84 for GPS coordinates
         sa.Column('has_2g', sa.Boolean(), nullable=False, default=False),
         sa.Column('has_3g', sa.Boolean(), nullable=False, default=False),

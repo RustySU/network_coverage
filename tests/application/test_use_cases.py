@@ -42,22 +42,22 @@ class TestFindNearbySitesByAddressUseCase:
         mock_sites = [
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.3522, y=48.8566),
+                location=Location(longitude=2.3522, latitude=48.8566),
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
             MobileSite(
                 operator=Operator.SFR,
-                location=Location(x=2.3523, y=48.8567),
+                location=Location(longitude=2.3523, latitude=48.8567),
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=False),
             ),
             MobileSite(
                 operator=Operator.BOUYGUES,
-                location=Location(x=2.3524, y=48.8568),
+                location=Location(longitude=2.3524, latitude=48.8568),
                 coverage=Coverage(has_2g=False, has_3g=True, has_4g=True),
             ),
             MobileSite(
                 operator=Operator.FREE,
-                location=Location(x=2.3525, y=48.8569),
+                location=Location(longitude=2.3525, latitude=48.8569),
                 coverage=Coverage(has_2g=False, has_3g=False, has_4g=True),
             ),
         ]
@@ -97,7 +97,7 @@ class TestFindNearbySitesByAddressUseCase:
         mock_sites = [
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.3522, y=48.8566),
+                location=Location(longitude=2.3522, latitude=48.8566),
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
         ]
@@ -193,13 +193,13 @@ class TestFindNearbySitesByAddressUseCase:
             # Orange site with 2G and 3G
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.3522, y=48.8566),
+                location=Location(longitude=2.3522, latitude=48.8566),
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=False),
             ),
             # Another Orange site with 4G
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.3523, y=48.8567),
+                location=Location(longitude=2.3523, latitude=48.8567),
                 coverage=Coverage(has_2g=False, has_3g=False, has_4g=True),
             ),
         ]

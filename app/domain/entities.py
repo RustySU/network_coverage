@@ -26,8 +26,8 @@ class Coverage:
 class Location:
     """Geographic location in GPS coordinates (WGS84)."""
 
-    x: float  # longitude
-    y: float  # latitude
+    longitude: float  # longitude
+    latitude: float  # latitude
 
 
 @dataclass

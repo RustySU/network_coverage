@@ -24,10 +24,10 @@ class TestLocation:
     """Test Location entity."""
 
     def test_location_creation(self) -> None:
-        """Test location creation."""
-        location = Location(x=100.0, y=200.0)
-        assert location.x == 100.0
-        assert location.y == 200.0
+        """Test Location entity creation."""
+        location = Location(longitude=100.0, latitude=200.0)
+        assert location.longitude == 100.0
+        assert location.latitude == 200.0
 
 
 class TestCoverage:
@@ -46,7 +46,7 @@ class TestMobileSite:
 
     def test_mobile_site_creation(self) -> None:
         """Test mobile site creation."""
-        location = Location(x=100.0, y=200.0)
+        location = Location(longitude=100.0, latitude=200.0)
         coverage = Coverage(has_2g=True, has_3g=True, has_4g=False)
         site = MobileSite(
             operator=Operator.ORANGE,
@@ -60,7 +60,7 @@ class TestMobileSite:
 
     def test_mobile_site_validation_invalid_operator(self) -> None:
         """Test mobile site validation with invalid operator."""
-        location = Location(x=100.0, y=200.0)
+        location = Location(longitude=100.0, latitude=200.0)
         coverage = Coverage(has_2g=True, has_3g=True, has_4g=False)
 
         with pytest.raises(ValueError, match="Invalid operator"):
@@ -83,7 +83,7 @@ class TestMobileSite:
 
     def test_mobile_site_validation_invalid_coverage(self) -> None:
         """Test mobile site validation with invalid coverage."""
-        location = Location(x=100.0, y=200.0)
+        location = Location(longitude=100.0, latitude=200.0)
 
         with pytest.raises(ValueError, match="Invalid coverage"):
             MobileSite(

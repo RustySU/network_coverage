@@ -34,10 +34,10 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
             for site in sites:
                 model = MobileSiteModel(
                     operator=site.operator.value,
-                    x=site.location.x,
-                    y=site.location.y,
+                    longitude=site.location.longitude,
+                    latitude=site.location.latitude,
                     geom=func.ST_SetSRID(
-                        func.ST_MakePoint(site.location.x, site.location.y), 4326
+                        func.ST_MakePoint(site.location.longitude, site.location.latitude), 4326
                     ),
                     has_2g=site.coverage.has_2g,
                     has_3g=site.coverage.has_3g,
@@ -143,7 +143,7 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
     def _to_entity(self, model: MobileSiteModel) -> MobileSite:
         """Convert database model to domain entity."""
         try:
-            location = Location(x=model.x_value, y=model.y_value)
+            location = Location(longitude=model.longitude_value, latitude=model.latitude_value)
             coverage = Coverage(
                 has_2g=model.has_2g_value,
                 has_3g=model.has_3g_value,

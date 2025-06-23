@@ -111,31 +111,31 @@ class TestSQLAlchemyMobileSiteRepository:
             # Paris center - Eiffel Tower area
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.2945, y=48.8584),  # Eiffel Tower coordinates
+                location=Location(longitude=2.2945, latitude=48.8584),  # Eiffel Tower coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
             # Paris - Notre Dame area
             MobileSite(
                 operator=Operator.SFR,
-                location=Location(x=2.3499, y=48.8530),  # Notre Dame coordinates
+                location=Location(longitude=2.3499, latitude=48.8530),  # Notre Dame coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=False),
             ),
             # Paris - Arc de Triomphe area
             MobileSite(
                 operator=Operator.BOUYGUES,
-                location=Location(x=2.2950, y=48.8738),  # Arc de Triomphe coordinates
+                location=Location(longitude=2.2950, latitude=48.8738),  # Arc de Triomphe coordinates
                 coverage=Coverage(has_2g=True, has_3g=False, has_4g=True),
             ),
             # Paris - Montmartre area
             MobileSite(
                 operator=Operator.FREE,
-                location=Location(x=2.3424, y=48.8867),  # Sacré-Cœur coordinates
+                location=Location(longitude=2.3424, latitude=48.8867),  # Sacré-Cœur coordinates
                 coverage=Coverage(has_2g=False, has_3g=True, has_4g=True),
             ),
             # Lyon - far from Paris (should not be found in Paris searches)
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=4.8357, y=45.7640),  # Lyon coordinates
+                location=Location(longitude=4.8357, latitude=45.7640),  # Lyon coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
         ]
@@ -160,8 +160,8 @@ class TestSQLAlchemyMobileSiteRepository:
         mock_model = MagicMock()
         mock_model.configure_mock(
             operator_value="Orange",
-            x_value=100.0,
-            y_value=200.0,
+            longitude_value=100.0,
+            latitude_value=200.0,
             has_2g_value=True,
             has_3g_value=True,
             has_4g_value=False,
@@ -170,8 +170,8 @@ class TestSQLAlchemyMobileSiteRepository:
         entity = unit_repository._to_entity(mock_model)
 
         assert entity.operator == Operator.ORANGE
-        assert entity.location.x == 100.0
-        assert entity.location.y == 200.0
+        assert entity.location.longitude == 100.0
+        assert entity.location.latitude == 200.0
         assert entity.coverage.has_2g is True
         assert entity.coverage.has_3g is True
         assert entity.coverage.has_4g is False
@@ -184,8 +184,8 @@ class TestSQLAlchemyMobileSiteRepository:
         mock_model = MagicMock()
         mock_model.configure_mock(
             operator_value="InvalidOperator",
-            x_value=100.0,
-            y_value=200.0,
+            longitude_value=100.0,
+            latitude_value=200.0,
             has_2g_value=True,
             has_3g_value=True,
             has_4g_value=False,
@@ -210,8 +210,8 @@ class TestSQLAlchemyMobileSiteRepository:
             mock_model = MagicMock()
             mock_model.configure_mock(
                 operator_value=operator_str,
-                x_value=100.0,
-                y_value=200.0,
+                longitude_value=100.0,
+                latitude_value=200.0,
                 has_2g_value=True,
                 has_3g_value=True,
                 has_4g_value=False,
@@ -241,7 +241,7 @@ class TestSQLAlchemyMobileSiteRepository:
         lyon_sites_in_result = [
             site
             for site in result
-            if site.location.x == 4.8357 and site.location.y == 45.7640
+            if site.location.longitude == 4.8357 and site.location.latitude == 45.7640
         ]
         assert len(lyon_sites_in_result) == 0, (
             "Lyon site should not be within 50km of Paris"
@@ -260,19 +260,20 @@ class TestSQLAlchemyMobileSiteRepository:
             latitude=search_lat, longitude=search_lon, radius_km=radius_km
         )
 
+        assert len(result) == 1, f"Expected 1 site, but found {len(result)}"
         # Should find the Notre Dame site
         notre_dame_site = next(
             (
                 site
                 for site in result
-                if site.location.x == 2.3499 and site.location.y == 48.8530
+                if site.location.longitude == 2.3499 and site.location.latitude == 48.8530
             ),
             None,
         )
         assert notre_dame_site is not None
         assert notre_dame_site.operator == Operator.SFR
-        assert notre_dame_site.location.x == 2.3499
-        assert notre_dame_site.location.y == 48.8530
+        assert notre_dame_site.location.longitude == 2.3499
+        assert notre_dame_site.location.latitude == 48.8530
 
     @pytest.mark.asyncio
     async def test_find_nearby_no_results(
@@ -300,17 +301,17 @@ class TestSQLAlchemyMobileSiteRepository:
         sites = [
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(x=2.3522, y=48.8566),  # Paris center
+                location=Location(longitude=2.3522, latitude=48.8566),  # Paris center
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
             MobileSite(
                 operator=Operator.SFR,
-                location=Location(x=2.3523, y=48.8567),  # Slightly offset
+                location=Location(longitude=2.3523, latitude=48.8567),  # Slightly offset
                 coverage=Coverage(has_2g=True, has_3g=False, has_4g=True),
             ),
             MobileSite(
                 operator=Operator.BOUYGUES,
-                location=Location(x=2.3524, y=48.8568),  # Another offset
+                location=Location(longitude=2.3524, latitude=48.8568),  # Another offset
                 coverage=Coverage(has_2g=False, has_3g=True, has_4g=True),
             ),
         ]
@@ -325,8 +326,8 @@ class TestSQLAlchemyMobileSiteRepository:
         for i, saved_site in enumerate(saved_sites):
             original_site = sites[i]
             assert saved_site.operator == original_site.operator
-            assert saved_site.location.x == original_site.location.x
-            assert saved_site.location.y == original_site.location.y
+            assert saved_site.location.longitude == original_site.location.longitude
+            assert saved_site.location.latitude == original_site.location.latitude
             assert saved_site.coverage.has_2g == original_site.coverage.has_2g
             assert saved_site.coverage.has_3g == original_site.coverage.has_3g
             assert saved_site.coverage.has_4g == original_site.coverage.has_4g

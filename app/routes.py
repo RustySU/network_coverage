@@ -3,6 +3,7 @@
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.schemas import (
@@ -41,7 +42,7 @@ def get_find_nearby_by_address_use_case(
     """Get find nearby by address use case instance."""
     return FindNearbySitesByAddressUseCase(geocoding_service, repository)
 
-
+# TODO add test
 # Nearby search endpoint
 @router.post("/api/v1/nearby", response_model=list[NearbyAddressResponseItem])
 async def find_nearby_sites_by_address(
@@ -56,14 +57,7 @@ async def find_nearby_sites_by_address(
     # Validate input
     if not addresses:
         logger.warning("Empty address list received")
-        return []
-
-    if len(addresses) > 100:  # Reasonable limit
-        logger.warning(f"Too many addresses requested: {len(addresses)}")
-        raise HTTPException(
-            status_code=400,
-            detail="Too many addresses requested. Maximum 100 addresses allowed.",
-        )
+        raise HTTPException(status_code=400, detail="Empty address list received")
 
     # Execute use case
     results = await use_case.execute(addresses)
@@ -83,3 +77,17 @@ async def root() -> dict[str, str]:
         "version": settings.api_version,
         "docs": "/docs",
     }
+
+@router.get("/health")
+async def health() -> dict[str, str]:
+    """Health endpoint."""
+    # check db connection
+    try:
+        session = await anext(get_db())
+        await session.execute(text("SELECT 1"))
+    
+    except Exception as e:
+        logger.error(f"Database health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Database connection failed")
+    
+    return {"status": "ok"}

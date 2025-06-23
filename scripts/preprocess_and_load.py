@@ -2,16 +2,15 @@
 """Script to preprocess CSV and then load it for maximum efficiency."""
 
 import asyncio
+import sys
 import time
 from pathlib import Path
 
-import typer
-
 # Add the project root to the Python path
 project_root = Path(__file__).parent.parent
-import sys
-
 sys.path.insert(0, str(project_root))
+
+import typer
 
 from app.infrastructure.data_loader import load_data
 from app.infrastructure.database import create_data_loading_session

@@ -2,9 +2,17 @@
 
 import logging
 
+from pyproj import Geod
 import pyproj
 
 logger = logging.getLogger(__name__)
+
+
+def calculate_distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Calculate the distance between two points in kilometers using WGS84 ellipsoid."""
+    geod = Geod(ellps="WGS84")
+    _, _, distance_m = geod.inv(lon1, lat1, lon2, lat2)
+    return distance_m / 1000  # Convert meters to kilometers
 
 
 def lamber93_to_gps(x: float, y: float) -> tuple[float, float]:
