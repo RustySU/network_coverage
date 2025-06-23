@@ -165,10 +165,6 @@ Thumbs.db
 *.swo
 *~
 
-# Alembic
-alembic/versions/*.py
-!alembic/versions/__init__.py
-
 # Local configuration
 .env.local
 .env.development
