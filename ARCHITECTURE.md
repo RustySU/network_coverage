@@ -60,15 +60,33 @@ The Mobile Coverage API is a FastAPI-based service that provides mobile network 
 **Key Components:**
 - FastAPI application instance (`main.py`)
 - Route definitions (`routes.py`)
-- Exception handlers for different error types
+- Exception handlers (`exception_handlers.py`)
 - CORS middleware
 - API documentation generation
 
 **Error Handling:**
 ```python
-@app.exception_handler(RepositoryError)
-async def repository_exception_handler(request: Request, exc: RepositoryError):
-    # Returns 503 for database errors
+# app/exception_handlers.py
+def register_exception_handlers(app):
+    @app.exception_handler(RepositoryError)
+    async def repository_exception_handler(request: Request, exc: RepositoryError):
+        # Returns 503 for database errors
+    
+    @app.exception_handler(GeocodingError)
+    async def geocoding_exception_handler(request: Request, exc: GeocodingError):
+        # Returns 503 for geocoding service errors
+    
+    @app.exception_handler(DomainException)
+    async def domain_exception_handler(request: Request, exc: DomainException):
+        # Returns 500 for domain errors
+    
+    @app.exception_handler(Exception)
+    async def general_exception_handler(request: Request, exc: Exception):
+        # Returns 500 for unexpected errors
+
+# app/main.py
+from app.exception_handlers import register_exception_handlers
+register_exception_handlers(app)
 ```
 
 ### 2. Application Layer (`app/application/`)
