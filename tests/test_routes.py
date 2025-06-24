@@ -50,19 +50,19 @@ class TestRoutes:
 
     def test_nearby_endpoint_empty_list(self, client):
         """Test nearby endpoint with empty list."""
-        response = client.post("/api/v1/nearby", json=[])
+        response = client.post("/api/v1/network-coverage", json=[])
         assert response.status_code == 400
         assert response.json()["detail"] == "Empty address list received"
 
     def test_nearby_endpoint_invalid_json(self, client):
         """Test nearby endpoint with invalid JSON."""
-        response = client.post("/api/v1/nearby", json="invalid json")
+        response = client.post("/api/v1/network-coverage", json="invalid json")
         assert response.status_code == 422  # Validation error
 
     def test_nearby_endpoint_missing_fields(self, client):
         """Test nearby endpoint with missing required fields."""
         invalid_data = [{"id": "addr1"}]  # Missing address field
-        response = client.post("/api/v1/nearby", json=invalid_data)
+        response = client.post("/api/v1/network-coverage", json=invalid_data)
         assert response.status_code == 422  # Validation error
 
     @pytest.mark.asyncio
@@ -80,7 +80,7 @@ class TestRoutes:
         )
 
         try:
-            response = client.post("/api/v1/nearby", json=valid_data)
+            response = client.post("/api/v1/network-coverage", json=valid_data)
 
             assert response.status_code == 200
             assert response.json() == sample_response_data

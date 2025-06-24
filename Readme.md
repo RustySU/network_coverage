@@ -168,7 +168,7 @@ GET /heatlh
 
 ### Find Nearby Sites
 ```http
-POST /api/v1/nearby
+POST /api/v1/network-coverage
 Content-Type: application/json
 
 [(
