@@ -30,9 +30,11 @@ This application uses PostgreSQL with PostGIS for data storage instead of in-mem
 - **Geographic Queries**: Uses PostGIS for efficient spatial queries
 - **Async Support**: Built with SQLAlchemy async and FastAPI
 - **Comprehensive Testing**: Full test coverage with pytest
+- **Test Coverage**: 76%
 - **Type Safety**: Full type hints with mypy validation
 - **Code Quality**: Ruff for linting and formatting
 - **Docker-First Development**: All commands run inside Docker containers
+
 
 ## Architecture
 
@@ -119,34 +121,21 @@ docker-compose ps
 All commands run inside the Docker development container:
 
 ```bash
-# Install dependencies
-make install-dev
-
 # Run tests
 make test
-
-# Run tests with coverage
-make test-watch
 
 # Code quality checks
 make lint
 make format
 make type-check
-make check-all
 
 # Database operations
 make migrate
-make migrate-create
-make load-data
-
-# Clean up
-make clean
-
-# Open shell in container
-make shell
-
-# Run application (alternative to docker-compose up app)
-make run
+make reset-db
+make load-preprocessed
+make preprocess-csv
+make preprocess-and-load
+make debug-load-data
 ```
 
 ### Docker Commands
@@ -170,6 +159,11 @@ make docker-logs
 ### Root Endpoint
 ```http
 GET /
+```
+
+### Health Endpoint
+```http
+GET /heatlh
 ```
 
 ### Find Nearby Sites
@@ -228,7 +222,8 @@ make test
 
 ### Run specific test file
 ```bash
-docker-compose exec dev pytest tests/scripts/test_preprocessing.py -v
+# for example
+docker-compose exec app pytest tests/scripts/test_preprocessing.py -v
 ```
 
 ## Code Quality
@@ -250,19 +245,22 @@ make type-check
 
 ## Database Management
 
-### Create migration
-```bash
-make migrate-create
-```
-
 ### Apply migrations
 ```bash
 make migrate
 ```
 
-### Load CSV data
+### Reset DB
 ```bash
-make load-data
+make reset-db
+```
+
+### Load data
+```bash
+make load-preprocessed
+make preprocess-csv
+make preprocess-and-load
+make debug-load-data
 ```
 
 ## Project Structure
@@ -285,6 +283,7 @@ make load-data
 │   │   ├── geocode_service.py # Address geocoding service
 │   │   └── coordinate_utils.py # Lambert 93 to GPS conversion
 │   ├── config.py            # Application configuration
+│   ├── exception_handlers.py # Exception handlers for FastAPI
 │   ├── routes.py            # API routes
 │   └── main.py              # FastAPI application
 ├── tests/                   # Test suite (organized by layers)
@@ -295,9 +294,15 @@ make load-data
 │   ├── infrastructure/      # Infrastructure layer tests
 │   │   ├── test_repository.py    # Combined unit & integration tests
 │   │   ├── test_data_loader.py
-│   │   └── test_coordinate_utils.py
-│   └── scripts/             # Script tests
-│       └── test_preprocessing.py
+│   │   ├── test_coordinate_utils.py
+│   │   └── test_geocode_service.py # Geocoding service tests
+│   ├── scripts/             # Script tests
+│   │   └── test_preprocessing.py
+│   └── test_routes.py       # API routes tests
+├── resources/               # Data and documentation files
+│   ├── 2018_01_Sites_mobiles_2G_3G_4G_France_metropolitaine_L93_ver2.csv
+│   ├── Backend developer technical test.pdf
+│   └── preprocessed_mobile_sites.csv
 ├── alembic/                 # Database migrations
 │   ├── env.py               # Alembic environment
 │   └── versions/            # Migration files
@@ -322,7 +327,6 @@ The project includes three Docker services:
 
 1. **postgres**: PostgreSQL database with PostGIS extension
 2. **app**: FastAPI application with hot reload
-3. **dev**: Development container for running commands
 
 ## Data Format
 
