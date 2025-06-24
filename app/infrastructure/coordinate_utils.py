@@ -2,8 +2,8 @@
 
 import logging
 
-from pyproj import Geod
 import pyproj
+from pyproj import Geod
 
 logger = logging.getLogger(__name__)
 

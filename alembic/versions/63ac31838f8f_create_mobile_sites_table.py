@@ -32,12 +32,12 @@ def upgrade() -> None:
         sa.Column('has_3g', sa.Boolean(), nullable=False, default=False),
         sa.Column('has_4g', sa.Boolean(), nullable=False, default=False),
     )
-    
+
     # Create spatial index on geometry column (only if it doesn't exist)
     connection = op.get_bind()
     inspector = sa.inspect(connection)
     existing_indexes = [idx['name'] for idx in inspector.get_indexes('mobile_sites')]
-    
+
     if 'idx_mobile_sites_geom' not in existing_indexes:
         op.create_index('idx_mobile_sites_geom', 'mobile_sites', ['geom'], postgresql_using='gist')
 
@@ -45,7 +45,6 @@ def upgrade() -> None:
 def downgrade() -> None:
     # Drop index
     op.drop_index(op.f('idx_mobile_sites_geom'), table_name='mobile_sites')
-    
+
     # Drop table
     op.drop_table('mobile_sites')
-    

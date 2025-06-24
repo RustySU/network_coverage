@@ -110,4 +110,4 @@ async def _preprocess_and_load(
 
 
 if __name__ == "__main__":
-    app() 
+    app()

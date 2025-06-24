@@ -1,7 +1,6 @@
 """Application layer use cases."""
 
 import logging
-import math
 
 from app.application.schemas import (
     CoverageInfo,
@@ -181,13 +180,12 @@ class FindNearbySitesByAddressUseCase:
 
             # Check each site's capabilities and update coverage accordingly
             for site in sites:
-
                 # Check if all operators have full coverage
                 all_operators_covered = all(
                     coverage.has_2g & coverage.has_3g & coverage.has_4g
                     for coverage in coverage_by_operator.values()
                 )
-                
+
                 if all_operators_covered:
                     return coverage_by_operator
 
@@ -224,7 +222,7 @@ class FindNearbySitesByAddressUseCase:
                 f"Database error in coverage lookup for coordinates ({latitude}, {longitude}): {str(e)}",
                 exc_info=True,
             )
-        
+
             raise
         except Exception as e:
             logger.error(

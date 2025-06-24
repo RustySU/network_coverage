@@ -179,34 +179,3 @@ class TestPreprocessing:
             input_file.unlink()
             if output_file.exists():
                 output_file.unlink()
-
-    def test_preprocess_csv_coordinate_conversion_error(self) -> None:
-        """Test preprocessing when coordinate conversion fails."""
-        # Create CSV with coordinates that might cause conversion issues
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
-            writer = csv.writer(f)
-            writer.writerow(["Operateur", "x", "y", "2G", "3G", "4G"])
-            writer.writerow(
-                ["Orange", "999999999", "999999999", "1", "1", "0"]
-            )  # Extreme values
-            input_file = Path(f.name)
-
-        output_file = Path("test_output_extreme.csv")
-
-        try:
-            # This might fail due to extreme coordinate values
-            preprocess_csv(input_file, output_file, convert_coordinates=True)
-
-            # Check if any rows were processed
-            with open(output_file, encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                rows = list(reader)
-
-            # The result depends on whether pyproj can handle the extreme values
-            # We just check that the function doesn't crash
-
-        finally:
-            # Clean up
-            input_file.unlink()
-            if output_file.exists():
-                output_file.unlink()

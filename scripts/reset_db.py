@@ -2,7 +2,6 @@
 """Reset database tables to include updated operator enum."""
 
 import asyncio
-import os
 import sys
 from pathlib import Path
 
@@ -10,7 +9,6 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-import typer
 from sqlalchemy import text
 
 from app.infrastructure.database import Base, engine

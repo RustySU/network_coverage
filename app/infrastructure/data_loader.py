@@ -108,14 +108,14 @@ class CSVDataLoader:
                     longitude = float(row["longitude"])
                     latitude = float(row["latitude"])
                 except ValueError as e:
-                    raise ValueError(f"Invalid GPS coordinates: {e}")
+                    raise ValueError(f"Invalid GPS coordinates: {e}") from e
             else:
                 # Original CSV with Lambert 93 coordinates
                 try:
                     x_lambert = float(row["x"])
                     y_lambert = float(row["y"])
                 except ValueError as e:
-                    raise ValueError(f"Invalid coordinates: {e}")
+                    raise ValueError(f"Invalid coordinates: {e}") from e
 
                 # Convert Lambert 93 to GPS coordinates
                 longitude, latitude = lamber93_to_gps(x_lambert, y_lambert)
@@ -126,7 +126,7 @@ class CSVDataLoader:
                 has_3g = bool(int(row["3G"]))
                 has_4g = bool(int(row["4G"]))
             except (ValueError, KeyError) as e:
-                raise ValueError(f"Invalid coverage flags: {e}")
+                raise ValueError(f"Invalid coverage flags: {e}") from e
 
             location = Location(longitude=longitude, latitude=latitude)
             coverage = Coverage(has_2g=has_2g, has_3g=has_3g, has_4g=has_4g)

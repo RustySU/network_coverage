@@ -10,8 +10,9 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from app.infrastructure.coordinate_utils import lamber93_to_gps
 import typer
+
+from app.infrastructure.coordinate_utils import lamber93_to_gps
 
 app = typer.Typer(help="Preprocess CSV file for faster loading")
 
@@ -102,7 +103,7 @@ def preprocess_csv(
                 try:
                     x = float(row['x'])
                     y = float(row['y'])
-                except (ValueError, KeyError) as e:
+                except (ValueError, KeyError):
                     error_count += 1
                     continue
 
@@ -116,7 +117,7 @@ def preprocess_csv(
                         error_count += 1
                         continue
 
-                except (ValueError, KeyError) as e:
+                except (ValueError, KeyError):
                     error_count += 1
                     continue
 
@@ -132,7 +133,7 @@ def preprocess_csv(
                             '3G': has_3g,
                             '4G': has_4g,
                         }
-                    except Exception as e:
+                    except Exception:
                         error_count += 1
                         continue
                 else:
@@ -148,7 +149,7 @@ def preprocess_csv(
                 writer.writerow(output_row)
                 processed_count += 1
 
-            except Exception as e:
+            except Exception:
                 error_count += 1
                 continue
 

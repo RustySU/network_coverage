@@ -89,6 +89,6 @@ async def health() -> dict[str, str]:
 
     except Exception as e:
         logger.error(f"Database health check failed: {str(e)}")
-        raise HTTPException(status_code=500, detail="Database connection failed")
+        raise HTTPException(status_code=500, detail="Database connection failed") from e
 
     return {"status": "ok"}

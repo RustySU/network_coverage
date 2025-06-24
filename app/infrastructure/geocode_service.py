@@ -9,6 +9,7 @@ from app.domain.exceptions import GeocodingError
 
 logger = logging.getLogger(__name__)
 
+
 class GeocodingService:
     """Service for geocoding addresses using external API."""
 

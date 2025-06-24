@@ -1,10 +1,7 @@
 """Domain services for business logic."""
 
 from app.domain.entities import (
-    Coverage,
-    Location,
     MobileSite,
-    Operator,
 )
 from app.domain.repositories import MobileSiteRepository
 

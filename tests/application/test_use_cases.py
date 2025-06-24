@@ -1,11 +1,12 @@
 """Tests for application use cases."""
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock
 
+import pytest
+
+from app.application.schemas import NearbyAddressRequestItem
 from app.application.use_cases import FindNearbySitesByAddressUseCase
-from app.application.schemas import NearbyAddressRequestItem, CoverageInfo
-from app.domain.entities import MobileSite, Location, Coverage, Operator
+from app.domain.entities import Coverage, Location, MobileSite, Operator
 
 
 class TestFindNearbySitesByAddressUseCase:

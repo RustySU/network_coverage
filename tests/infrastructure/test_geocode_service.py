@@ -1,10 +1,10 @@
 """Tests for geocoding service."""
 
-import pytest
+import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import httpx
-import asyncio
+import pytest
 
 from app.domain.exceptions import GeocodingError
 from app.infrastructure.geocode_service import GeocodingService

@@ -1,8 +1,10 @@
+from unittest.mock import AsyncMock
+
 import pytest
-from unittest.mock import AsyncMock, patch
 from fastapi.testclient import TestClient
-from app.main import app
+
 from app.application.use_cases import FindNearbySitesByAddressUseCase
+from app.main import app
 from app.routes import get_find_nearby_by_address_use_case
 
 

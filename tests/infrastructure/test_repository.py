@@ -1,16 +1,16 @@
 """Tests for repository functionality."""
 
-import pytest
-import asyncio
 import uuid
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 from unittest.mock import AsyncMock, MagicMock
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-from sqlalchemy import text
 
-from app.domain.entities import Operator, MobileSite, Location, Coverage
+import pytest
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+from app.domain.entities import Coverage, Location, MobileSite, Operator
+from app.infrastructure.models import Base
 from app.infrastructure.repositories import SQLAlchemyMobileSiteRepository
-from app.infrastructure.models import Base, MobileSiteModel
 
 
 class TestSQLAlchemyMobileSiteRepository:
