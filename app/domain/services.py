@@ -21,17 +21,3 @@ class MobileCoverageService:
     ) -> list[MobileSite]:
         """Find mobile sites near a given location."""
         return await self.repository.find_nearby(latitude, longitude, radius_km)
-
-    def create_mobile_site(
-        self,
-        operator: Operator,
-        x: float,
-        y: float,
-        has_2g: bool,
-        has_3g: bool,
-        has_4g: bool,
-    ) -> MobileSite:
-        """Create a new mobile site."""
-        location = Location(longitude=x, latitude=y)
-        coverage = Coverage(has_2g=has_2g, has_3g=has_3g, has_4g=has_4g)
-        return MobileSite(operator=operator, location=location, coverage=coverage)
