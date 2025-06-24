@@ -259,22 +259,11 @@ class FindNearbySitesByAddressUseCase:
                 f"Database error in coverage lookup for coordinates ({latitude}, {longitude}): {str(e)}",
                 exc_info=True,
             )
-            # Return empty coverage for database errors
-            return {
-                "orange": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "sfr": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "bouygues": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "free": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-            }
+          
+            raise
         except Exception as e:
             logger.error(
                 f"Unexpected error in coverage lookup for coordinates ({latitude}, {longitude}): {str(e)}",
                 exc_info=True,
             )
-            # Return empty coverage for unexpected errors
-            return {
-                "orange": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "sfr": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "bouygues": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                "free": CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-            }
+            raise
