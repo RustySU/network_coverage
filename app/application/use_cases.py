@@ -97,18 +97,7 @@ class FindNearbySitesByAddressUseCase:
                         exc_info=True,
                     )
                     # Return empty coverage for failed processing
-                    empty_coverage = CoverageInfo(
-                        **{"2G": False, "3G": False, "4G": False}
-                    )
-                    results.append(
-                        NearbyAddressResponseItem(
-                            id=address_item.id,
-                            orange=empty_coverage,
-                            SFR=empty_coverage,
-                            bouygues=empty_coverage,
-                            free=empty_coverage,
-                        )
-                    )
+                    raise
 
             logger.info(f"Successfully processed {len(results)} addresses")
             return results
@@ -118,16 +107,7 @@ class FindNearbySitesByAddressUseCase:
                 f"Critical error in use case execution: {str(e)}", exc_info=True
             )
             # Return empty results for all addresses in case of critical failure
-            return [
-                NearbyAddressResponseItem(
-                    id=address_item.id,
-                    orange=CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                    SFR=CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                    bouygues=CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                    free=CoverageInfo(**{"2G": False, "3G": False, "4G": False}),
-                )
-                for address_item in addresses
-            ]
+            raise
 
     async def _geocode_addresses_safe(
         self, addresses_dict: dict[str, str]
@@ -167,28 +147,13 @@ class FindNearbySitesByAddressUseCase:
                 f"Database error for address {address_id}: {str(e)}", exc_info=True
             )
             # Return empty coverage for database errors
-            empty_coverage = CoverageInfo(**{"2G": False, "3G": False, "4G": False})
-            return NearbyAddressResponseItem(
-                id=address_id,
-                orange=empty_coverage,
-                SFR=empty_coverage,
-                bouygues=empty_coverage,
-                free=empty_coverage,
-            )
+            raise
         except Exception as e:
             logger.error(
                 f"Unexpected error processing address {address_id}: {str(e)}",
                 exc_info=True,
             )
-            # Return empty coverage for unexpected errors
-            empty_coverage = CoverageInfo(**{"2G": False, "3G": False, "4G": False})
-            return NearbyAddressResponseItem(
-                id=address_id,
-                orange=empty_coverage,
-                SFR=empty_coverage,
-                bouygues=empty_coverage,
-                free=empty_coverage,
-            )
+            raise
 
     async def _find_coverage_for_location(
         self,
@@ -224,7 +189,7 @@ class FindNearbySitesByAddressUseCase:
                 )
                 
                 if all_operators_covered:
-                    break
+                    return coverage_by_operator
 
                 operator_name = site.operator.value.lower()
                 if operator_name in coverage_by_operator:
@@ -259,7 +224,7 @@ class FindNearbySitesByAddressUseCase:
                 f"Database error in coverage lookup for coordinates ({latitude}, {longitude}): {str(e)}",
                 exc_info=True,
             )
-          
+        
             raise
         except Exception as e:
             logger.error(

@@ -21,7 +21,7 @@ def register_exception_handlers(app):
         logger.error(f"Repository error: {str(exc)}", exc_info=True)
         return JSONResponse(
             status_code=503,
-            content={"detail": "Database service temporarily unavailable"},
+            content={"detail": "Internal server error"},
         )
 
     @app.exception_handler(GeocodingError)
@@ -32,7 +32,7 @@ def register_exception_handlers(app):
         logger.error(f"Geocoding error: {str(exc)}", exc_info=True)
         return JSONResponse(
             status_code=503,
-            content={"detail": "Geocoding service temporarily unavailable"},
+            content={"detail": "Internal server error"},
         )
 
     @app.exception_handler(DomainException)
