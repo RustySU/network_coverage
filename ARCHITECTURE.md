@@ -83,10 +83,6 @@ def register_exception_handlers(app):
     @app.exception_handler(Exception)
     async def general_exception_handler(request: Request, exc: Exception):
         # Returns 500 for unexpected errors
-
-# app/main.py
-from app.exception_handlers import register_exception_handlers
-register_exception_handlers(app)
 ```
 
 ### 2. Application Layer (`app/application/`)

@@ -43,7 +43,6 @@ def get_find_nearby_by_address_use_case(
     return FindNearbySitesByAddressUseCase(geocoding_service, repository)
 
 
-# TODO add test
 # Nearby search endpoint
 @router.post("/api/v1/nearby", response_model=list[NearbyAddressResponseItem])
 async def find_nearby_sites_by_address(
