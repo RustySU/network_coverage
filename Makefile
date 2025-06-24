@@ -32,13 +32,13 @@ docker-logs: ## Show Docker logs
 	docker-compose logs -f
 
 preprocess-csv: ## Preprocess CSV file for faster loading
-	docker-compose exec app python scripts/preprocess_csv.py 2018_01_Sites_mobiles_2G_3G_4G_France_metropolitaine_L93_ver2.csv preprocessed_mobile_sites.csv --convert-coordinates
+	docker-compose exec app python scripts/preprocess_csv.py ./resources/2018_01_Sites_mobiles_2G_3G_4G_France_metropolitaine_L93_ver2.csv ./resources/preprocessed_mobile_sites.csv --convert-coordinates
 
 preprocess-and-load: ## Preprocess CSV and load data
-	docker-compose exec app python scripts/preprocess_and_load.py 2018_01_Sites_mobiles_2G_3G_4G_France_metropolitaine_L93_ver2.csv
+	docker-compose exec app python scripts/preprocess_and_load.py ./resources/2018_01_Sites_mobiles_2G_3G_4G_France_metropolitaine_L93_ver2.csv
 
 load-preprocessed: ## Load preprocessed CSV data
-	docker-compose exec app python scripts/load_data.py preprocessed_mobile_sites.csv
+	docker-compose exec app python scripts/load_data.py ./resources/preprocessed_mobile_sites.csv
 
 debug-load-data: ## Load CSV data with debugger
 	docker-compose exec app python -m pdb scripts/load_data.py
