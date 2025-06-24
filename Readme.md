@@ -60,6 +60,7 @@ app/
 ### Infrastructure Layer
 - **Database**: SQLAlchemy models and async session management
 - **Repositories**: Concrete implementations of repository interfaces
+- **Tools**: Load data and geo service
 
 ## Technology Stack
 
@@ -82,8 +83,8 @@ app/
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
-cd mobile-coverage-api
+git clone https://github.com/RustySU/network_coverage.git
+cd network_coverage
 ```
 
 ### 2. Run the complete setup (recommended)
