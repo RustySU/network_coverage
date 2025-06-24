@@ -216,6 +216,16 @@ class FindNearbySitesByAddressUseCase:
 
             # Check each site's capabilities and update coverage accordingly
             for site in sites:
+
+                # Check if all operators have full coverage
+                all_operators_covered = all(
+                    coverage.has_2g & coverage.has_3g & coverage.has_4g
+                    for coverage in coverage_by_operator.values()
+                )
+                
+                if all_operators_covered:
+                    break
+
                 operator_name = site.operator.value.lower()
                 if operator_name in coverage_by_operator:
                     if all(
