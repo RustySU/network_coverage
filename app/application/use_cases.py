@@ -16,7 +16,7 @@ from app.infrastructure.coordinate_utils import calculate_distance_km
 # Technology-specific search radii
 TECHNOLOGY_RADII = {
     "2G": 30.0,  # 2G coverage radius in km
-    "3G": 5.0,   # 3G coverage radius in km
+    "3G": 5.0,  # 3G coverage radius in km
     "4G": 10.0,  # 4G coverage radius in km
 }
 
@@ -218,11 +218,22 @@ class FindNearbySitesByAddressUseCase:
             for site in sites:
                 operator_name = site.operator.value.lower()
                 if operator_name in coverage_by_operator:
+                    if all(
+                        [
+                            coverage_by_operator[operator_name].has_2g,
+                            coverage_by_operator[operator_name].has_3g,
+                            coverage_by_operator[operator_name].has_4g,
+                        ]
+                    ):
+                        continue
                     # Calculate distance from search point to site
                     distance_km = calculate_distance_km(
-                        latitude, longitude, site.location.latitude, site.location.longitude
+                        latitude,
+                        longitude,
+                        site.location.latitude,
+                        site.location.longitude,
                     )
-                    
+
                     # Update coverage based on what this site supports and distance
                     if site.coverage.has_2g and distance_km <= TECHNOLOGY_RADII["2G"]:
                         coverage_by_operator[operator_name].has_2g = True

@@ -111,31 +111,41 @@ class TestSQLAlchemyMobileSiteRepository:
             # Paris center - Eiffel Tower area
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(longitude=2.2945, latitude=48.8584),  # Eiffel Tower coordinates
+                location=Location(
+                    longitude=2.2945, latitude=48.8584
+                ),  # Eiffel Tower coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
             # Paris - Notre Dame area
             MobileSite(
                 operator=Operator.SFR,
-                location=Location(longitude=2.3499, latitude=48.8530),  # Notre Dame coordinates
+                location=Location(
+                    longitude=2.3499, latitude=48.8530
+                ),  # Notre Dame coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=False),
             ),
             # Paris - Arc de Triomphe area
             MobileSite(
                 operator=Operator.BOUYGUES,
-                location=Location(longitude=2.2950, latitude=48.8738),  # Arc de Triomphe coordinates
+                location=Location(
+                    longitude=2.2950, latitude=48.8738
+                ),  # Arc de Triomphe coordinates
                 coverage=Coverage(has_2g=True, has_3g=False, has_4g=True),
             ),
             # Paris - Montmartre area
             MobileSite(
                 operator=Operator.FREE,
-                location=Location(longitude=2.3424, latitude=48.8867),  # Sacré-Cœur coordinates
+                location=Location(
+                    longitude=2.3424, latitude=48.8867
+                ),  # Sacré-Cœur coordinates
                 coverage=Coverage(has_2g=False, has_3g=True, has_4g=True),
             ),
             # Lyon - far from Paris (should not be found in Paris searches)
             MobileSite(
                 operator=Operator.ORANGE,
-                location=Location(longitude=4.8357, latitude=45.7640),  # Lyon coordinates
+                location=Location(
+                    longitude=4.8357, latitude=45.7640
+                ),  # Lyon coordinates
                 coverage=Coverage(has_2g=True, has_3g=True, has_4g=True),
             ),
         ]
@@ -266,7 +276,8 @@ class TestSQLAlchemyMobileSiteRepository:
             (
                 site
                 for site in result
-                if site.location.longitude == 2.3499 and site.location.latitude == 48.8530
+                if site.location.longitude == 2.3499
+                and site.location.latitude == 48.8530
             ),
             None,
         )
@@ -306,7 +317,9 @@ class TestSQLAlchemyMobileSiteRepository:
             ),
             MobileSite(
                 operator=Operator.SFR,
-                location=Location(longitude=2.3523, latitude=48.8567),  # Slightly offset
+                location=Location(
+                    longitude=2.3523, latitude=48.8567
+                ),  # Slightly offset
                 coverage=Coverage(has_2g=True, has_3g=False, has_4g=True),
             ),
             MobileSite(

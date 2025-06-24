@@ -59,28 +59,30 @@ class TestCoordinateUtils:
         # Test distance between Paris and Lyon (approximately 400km)
         paris_lat, paris_lon = 48.8566, 2.3522
         lyon_lat, lyon_lon = 45.7640, 4.8357
-        
+
         distance = calculate_distance_km(paris_lat, paris_lon, lyon_lat, lyon_lon)
-        
+
         # Should be approximately 400km (allowing some tolerance)
         assert 390 <= distance <= 410
-        
+
     def test_calculate_distance_km_same_point(self) -> None:
         """Test distance calculation for the same point."""
         lat, lon = 48.8566, 2.3522
-        
+
         distance = calculate_distance_km(lat, lon, lat, lon)
-        
+
         # Should be 0km
         assert distance == 0.0
-        
+
     def test_calculate_distance_km_close_points(self) -> None:
         """Test distance calculation for very close points."""
         # Two points in Paris (Eiffel Tower and Notre Dame)
         eiffel_lat, eiffel_lon = 48.8584, 2.2945
         notre_dame_lat, notre_dame_lon = 48.8530, 2.3499
-        
-        distance = calculate_distance_km(eiffel_lat, eiffel_lon, notre_dame_lat, notre_dame_lon)
-        
+
+        distance = calculate_distance_km(
+            eiffel_lat, eiffel_lon, notre_dame_lat, notre_dame_lon
+        )
+
         # Should be approximately 4-5km
         assert 4.0 <= distance <= 5.0

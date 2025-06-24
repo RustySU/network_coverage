@@ -37,7 +37,10 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
                     longitude=site.location.longitude,
                     latitude=site.location.latitude,
                     geom=func.ST_SetSRID(
-                        func.ST_MakePoint(site.location.longitude, site.location.latitude), 4326
+                        func.ST_MakePoint(
+                            site.location.longitude, site.location.latitude
+                        ),
+                        4326,
                     ),
                     has_2g=site.coverage.has_2g,
                     has_3g=site.coverage.has_3g,
@@ -99,7 +102,7 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
                 """).bindparams(
                     longitude=longitude,
                     latitude=latitude,
-                    radius_meters=radius_km * 1000
+                    radius_meters=radius_km * 1000,
                 )
             )
 
@@ -143,7 +146,9 @@ class SQLAlchemyMobileSiteRepository(MobileSiteRepository):
     def _to_entity(self, model: MobileSiteModel) -> MobileSite:
         """Convert database model to domain entity."""
         try:
-            location = Location(longitude=model.longitude_value, latitude=model.latitude_value)
+            location = Location(
+                longitude=model.longitude_value, latitude=model.latitude_value
+            )
             coverage = Coverage(
                 has_2g=model.has_2g_value,
                 has_3g=model.has_3g_value,

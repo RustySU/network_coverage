@@ -42,6 +42,7 @@ def get_find_nearby_by_address_use_case(
     """Get find nearby by address use case instance."""
     return FindNearbySitesByAddressUseCase(geocoding_service, repository)
 
+
 # TODO add test
 # Nearby search endpoint
 @router.post("/api/v1/nearby", response_model=list[NearbyAddressResponseItem])
@@ -78,6 +79,7 @@ async def root() -> dict[str, str]:
         "docs": "/docs",
     }
 
+
 @router.get("/health")
 async def health() -> dict[str, str]:
     """Health endpoint."""
@@ -85,9 +87,9 @@ async def health() -> dict[str, str]:
     try:
         session = await anext(get_db())
         await session.execute(text("SELECT 1"))
-    
+
     except Exception as e:
         logger.error(f"Database health check failed: {str(e)}")
         raise HTTPException(status_code=500, detail="Database connection failed")
-    
+
     return {"status": "ok"}

@@ -5,6 +5,7 @@ from app.main import app
 from app.application.use_cases import FindNearbySitesByAddressUseCase
 from app.routes import get_find_nearby_by_address_use_case
 
+
 class TestRoutes:
     """Test class for API routes."""
 
@@ -65,14 +66,18 @@ class TestRoutes:
         assert response.status_code == 422  # Validation error
 
     @pytest.mark.asyncio
-    async def test_nearby_endpoint_valid_request(self, client, mock_use_case, sample_response_data):
+    async def test_nearby_endpoint_valid_request(
+        self, client, mock_use_case, sample_response_data
+    ):
         """Test nearby endpoint with valid request using mock use case."""
         valid_data = [{"id": "addr1", "address": "Paris, France"}]
         mock_use_case.execute.return_value = sample_response_data
 
         # Override the dependency
         app.dependency_overrides = {}
-        app.dependency_overrides[get_find_nearby_by_address_use_case] = lambda: mock_use_case
+        app.dependency_overrides[get_find_nearby_by_address_use_case] = (
+            lambda: mock_use_case
+        )
 
         try:
             response = client.post("/api/v1/nearby", json=valid_data)
