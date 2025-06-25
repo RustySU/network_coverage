@@ -103,6 +103,12 @@ This single command will:
 ### 3. Access the API
 - API Documentation: http://localhost:8000/docs
 - Root Endpoint: http://localhost:8000/
+- Network Coveraget Endpoint: http://localhost:8000/network-coverage
+
+```bash
+# Network coverage example
+curl -X POST http://localhost:8000/api/v1/network-coverage -H "Content-Type: application/json" -d '[{"id": "tour_eiffel", "address": "Champ de Mars, 5 Avenue Anatole France, 75007 Paris"}, {"id": "myhome", "address": "16 rue du colvert, 27100 Val-de-Reuil"}]'
+```
 
 ## Development Workflow
 

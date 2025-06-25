@@ -208,8 +208,8 @@ Client receives appropriate HTTP status + error details
 CREATE TABLE mobile_sites (
     id SERIAL PRIMARY KEY,
     operator VARCHAR(50) NOT NULL,
-    x DOUBLE PRECISION NOT NULL,
-    y DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
     geom GEOMETRY(POINT, 4326),  -- PostGIS spatial column
     has_2g BOOLEAN NOT NULL,
     has_3g BOOLEAN NOT NULL,
